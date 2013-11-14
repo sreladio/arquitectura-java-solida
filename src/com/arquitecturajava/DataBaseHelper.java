@@ -13,7 +13,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 public class DataBaseHelper<T> {
-	private static final Logger log = Logger.getLogger(DataBaseHelper.class);
+	private static final Logger log = Logger.getLogger(DataBaseHelper.class); 
 	private final String DRIVER = "com.mysql.jdbc.Driver";
 	private final String SCHEMA = "jdbc:mysql://localhost/arquitecturajava";
 	private final String USER = "root";

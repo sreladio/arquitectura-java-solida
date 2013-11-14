@@ -5,7 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.arquitecturajava.Libro;
+import com.arquitecturajava.aplicacion.beans.Libro;
 
 public class MostrarLibrosAccion extends Accion {
 
