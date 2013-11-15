@@ -31,9 +31,9 @@
 			
 			<p>
 				<label for="categoria">Categoria:</label>
-				<select name="categoria">
+				<select name="categoriaId">
 					<c:forEach var="categoria" items="${listaDeCategorias}">
-						<option value="${categoria}">${categoria}</option>
+						<option value="${categoria.id}">${categoria.nombre}</option>
 					</c:forEach>
 				</select>
 			</p>

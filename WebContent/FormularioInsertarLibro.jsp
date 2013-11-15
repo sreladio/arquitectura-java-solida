@@ -1,5 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+ 
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="css/formato.css" />
@@ -23,7 +25,11 @@
 			
 			<p>
 				<label for="categoria">Categoria:</label>
-				<input id="categoria" type="text" name="categoria">
+				<select name="categoriaId">
+					<c:forEach var="categoria" items="${listaDeCategorias}">
+						<option value="${categoria.id}">${categoria.nombre}</option>
+					</c:forEach>
+				</select>
 			</p>
 			
 			<p>

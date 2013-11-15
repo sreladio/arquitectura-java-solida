@@ -3,6 +3,8 @@ package com.arquitecturajava.aplicacion.beans;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Id;
 
@@ -14,8 +16,10 @@ import org.hibernate.Transaction;
 import com.arquitecturajava.HibernateHelper;
 
 /**
- * Almacena todas las consultas que manejen los datos que contiene la tabla 'libros'
+ * Clase Active Record que almacena todas las consultas que 
+ * manejen los datos que contiene la tabla 'libros'
  * @author eladio
+ * 
  */
 @Entity
 @Table(name="libros")
@@ -24,7 +28,9 @@ public class Libro {
 	@Id
 	private String isbn;
 	private String titulo;
-	private String categoria;
+	@ManyToOne
+	@JoinColumn(name="categoria_id")
+	private Categoria categoria;
 	
 	public Libro() {
 	}
@@ -33,7 +39,7 @@ public class Libro {
 		this.isbn = isbn;
 	}
 	
-	public Libro(String isbn, String titulo, String categoria) {
+	public Libro(String isbn, String titulo, Categoria categoria) {
 		this.isbn = isbn;
 		this.titulo = titulo;
 		this.categoria = categoria;
@@ -47,7 +53,7 @@ public class Libro {
 		return this.titulo;
 	}
 	
-	public String getCategoria() {
+	public Categoria getCategoria() {
 		return this.categoria;
 	}
 	
@@ -59,7 +65,7 @@ public class Libro {
 		this.titulo = titulo;
 	}
 	
-	public void setCategoria(String categoria) {
+	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
 	
@@ -167,7 +173,12 @@ public class Libro {
 		
 		SessionFactory sesionFactoria = HibernateHelper.getSessionFactory();
 		Session sesion = sesionFactoria.openSession();
-		String consulta = "from Libro libro";
+		// Esta	clausula 'rigth join fetch' ejecuta una consulta de joins entre
+		// las dos tablas, cargando todos los datos en una única consulta.
+		
+		// Así evitamos tener que hacer varias consultas cuando accedemos a un campo de la
+		// entidad Categoria desde la capa de presentación: "libro[x].categoria.nombre"
+		String consulta = "from Libro libro right join fetch libro.categoria";
 		List<Libro> listaDeLibros = sesion.createQuery(consulta).list();
 		sesion.close();
 		return listaDeLibros;
