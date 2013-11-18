@@ -100,9 +100,13 @@ public class Categoria {
 		 */
 		EntityManagerFactory entityManagerFactory = JPAHelper.getEntityManagerFactory();
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		List<Categoria> listaDeCategorias = null;
 		TypedQuery<Categoria> consulta = entityManager.createNamedQuery("buscarTodas", Categoria.class);
-		List<Categoria> listaDeCategorias = consulta.getResultList();
-		entityManager.close();
+		try {
+			listaDeCategorias = consulta.getResultList();
+		} finally {
+			entityManager.close();
+		}
 		return listaDeCategorias;
 	}
 }

@@ -238,10 +238,14 @@ public class Libro {
 		 */
 		EntityManagerFactory entityManagerFactory = JPAHelper.getEntityManagerFactory();
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		Libro libro = null;
 		TypedQuery<Libro> consulta = entityManager.createNamedQuery("buscarPorClave", Libro.class);
 		consulta.setParameter(1, isbn);
-		Libro libro = consulta.getSingleResult();
-		entityManager.close();
+		try {
+			libro = consulta.getSingleResult();
+		} finally {
+			entityManager.close();
+		}
 		return libro;
 	}
 	
@@ -275,10 +279,14 @@ public class Libro {
 		 */
 		EntityManagerFactory entityManagerFactory = JPAHelper.getEntityManagerFactory();
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		List<Libro> listaDeLibros = null;
 		TypedQuery<Libro> consulta = entityManager.createNamedQuery("buscarPorCategoria", Libro.class);
 		consulta.setParameter(1, categoria);
-		List<Libro> listaDeLibros = consulta.getResultList();
-		entityManager.close();
+		try {
+			listaDeLibros = consulta.getResultList();
+		} finally {
+			entityManager.close();
+		}
 		return listaDeLibros;
 	}
 	
@@ -318,10 +326,14 @@ public class Libro {
 		 */
 		EntityManagerFactory entityManagerFactory = JPAHelper.getEntityManagerFactory();
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		List<Libro> listaDeLibros = null;
 		// al igual que con Hibernate hacemos una carga agresiva (eager) del extremo ONE
 		TypedQuery<Libro> consulta = entityManager.createNamedQuery("buscarTodos", Libro.class);
-		List<Libro> listaDeLibros = consulta.getResultList();
-		entityManager.close();
+		try {
+			listaDeLibros = consulta.getResultList();
+		} finally {
+			entityManager.close();
+		}
 		return listaDeLibros;
 	}
 	
