@@ -14,12 +14,13 @@ public class FiltrarCategoriaAccion extends Accion {
 		List<Libro> listaDeLibros = null;
 		List<Categoria> listaDeCategorias = Categoria.buscarTodos();
 		String categoriaId = request.getParameter("categoriaId"); 
+		Categoria categoria = new Categoria(categoriaId);
 		
 		if(categoriaId == null || categoriaId.equals("seleccionar")) {
 			listaDeLibros = Libro.buscarTodos();
 		}
 		else {
-			listaDeLibros = Libro.buscarPorCategoria(categoriaId);
+			listaDeLibros = Libro.buscarPorCategoria(categoria);
 		}
 		
 		request.setAttribute("listaDeLibros", listaDeLibros);

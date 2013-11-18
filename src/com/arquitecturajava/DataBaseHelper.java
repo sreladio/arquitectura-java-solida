@@ -12,6 +12,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+/**
+ * 
+ * @author eladio
+ *
+ * @param <T>
+ */
 public class DataBaseHelper<T> {
 	private static final Logger log = Logger.getLogger(DataBaseHelper.class); 
 	private final String DRIVER = "com.mysql.jdbc.Driver";
@@ -22,7 +28,7 @@ public class DataBaseHelper<T> {
 	/**
 	 * Ejecuta una consulta SQL de modificación (insert, update, delete)
 	 * 
-	 * @param consultaSQL
+	 * @param consultaSQL sentencia SQL a ejecutar
 	 * @return Número de filas que han modifiacado
 	 */
 	public int modificarRegistro(String consultaSQL) {
@@ -63,6 +69,12 @@ public class DataBaseHelper<T> {
 		return filas;
 	}
 
+	/**
+	 * 
+	 * @param consultaSQL
+	 * @param clase
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<T> seleccionarRegistros(String consultaSQL, Class<T> clase) {
 		Connection conexion = null;

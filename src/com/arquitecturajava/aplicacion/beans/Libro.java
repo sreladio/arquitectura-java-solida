@@ -3,17 +3,25 @@ package com.arquitecturajava.aplicacion.beans;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.PersistenceException;
 import javax.persistence.Table;
 import javax.persistence.Id;
+import javax.persistence.TypedQuery;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+// import org.hibernate.Query;
+// import org.hibernate.Session;
+// import org.hibernate.SessionFactory;
+// import org.hibernate.Transaction;
 
-import com.arquitecturajava.HibernateHelper;
+// import com.arquitecturajava.HibernateHelper;
+import com.arquitecturajava.JPAHelper;
 
 /**
  * Clase Active Record que almacena todas las consultas que 
@@ -21,6 +29,11 @@ import com.arquitecturajava.HibernateHelper;
  * @author eladio
  * 
  */
+@NamedQueries({
+	@NamedQuery(name="buscarTodos", query="select l from Libro l JOIN FETCH l.categoria"),
+	@NamedQuery(name="buscarPorCategoria", query="select l from Libro l where l.categoria=?1"),
+	@NamedQuery(name="buscarPorClave", query="select l from Libro l where l.isbn=?1")
+})
 @Entity
 @Table(name="libros")
 public class Libro {
@@ -71,7 +84,8 @@ public class Libro {
 	
 	public void insertar() {
 		/**
-		 * CODIGO PARA UTILIZAR CON LA CLASE DATABASE HELPER
+		 * PERSISTENCIA CON JDBC
+		 * ---------------------
 		 * 
 		 * DataBaseHelper<Libro> db = new DataBaseHelper<Libro>();
 		 * String consultaSQL = "insert into libros values";
@@ -79,35 +93,84 @@ public class Libro {
 		 * db.modificarRegistro(consultaSQL);
 		 */
 		
-		SessionFactory sesionFactoria = HibernateHelper.getSessionFactory();
-		Session sesion = sesionFactoria.openSession();
-		Transaction transaccion = sesion.beginTransaction();
-		sesion.save(this);
-		transaccion.commit();
-		sesion.close();
+		/**
+		 * PERSISTENCIA CON HINERNATE
+		 * --------------------------
+		 * 
+		 * SessionFactory sesionFactoria = HibernateHelper.getSessionFactory();
+		 * Session sesion = sesionFactoria.openSession();
+		 * Transaction transaccion = sesion.beginTransaction();
+		 * sesion.save(this);
+		 * transaccion.commit();
+		 * sesion.close();
+		 */
+		
+		/**
+		 * PERSISTENCIA CON JPA
+		 * --------------------
+		 */
+		EntityManagerFactory entityManagerFactory = JPAHelper.getEntityManagerFactory();
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		EntityTransaction transaccion = null;
+		try {
+			transaccion = entityManager.getTransaction();
+			transaccion.begin();
+			entityManager.persist(this);
+			transaccion.commit();
+		} catch(PersistenceException e) {
+			entityManager.getTransaction().rollback();
+			throw e;
+		} finally {
+			entityManager.close();
+		}
 	}
 	
 	public void borrar() {
 		/**
-		 * CODIGO PARA UTILIZAR CON LA CLASE DATABASE HELPER
+		 * PERSISTENCIA CON JDBC
+		 * ---------------------
 		 * 
 		 * DataBaseHelper<Libro> db = new DataBaseHelper<Libro>();
 		 * String consultaSQL = "delete from libros where isbn='" + this.isbn + "'";
 		 * db.modificarRegistro(consultaSQL);
 		 */
 		
-		SessionFactory sesionFactoria = HibernateHelper.getSessionFactory();
-		Session sesion = sesionFactoria.openSession();
-		Transaction transaccion = sesion.beginTransaction();
-		sesion.delete(this);
-		transaccion.commit();
-		sesion.close();
+		/**
+		 * PERSISTENCIA CON HIBERNATE
+		 * --------------------------
+		 * 
+		 * SessionFactory sesionFactoria = HibernateHelper.getSessionFactory();
+		 * Session sesion = sesionFactoria.openSession();
+		 * Transaction transaccion = sesion.beginTransaction();
+		 * sesion.delete(this);
+		 * transaccion.commit();
+		 * sesion.close();
+		 */	
+		
+		/**
+		 * PERSISTENCIA CON JPA
+		 * --------------------
+		 */
+		EntityManagerFactory entityManagerFactory = JPAHelper.getEntityManagerFactory();
+		EntityManager  entityManager = entityManagerFactory.createEntityManager();
+		EntityTransaction transaccion = null;
+		try {
+			transaccion = entityManager.getTransaction();
+			transaccion.begin();
+			entityManager.remove(entityManager.merge(this));
+			transaccion.commit();
+		} catch(PersistenceException e) {
+			entityManager.getTransaction().rollback();
+			throw e;
+		} finally {
+			entityManager.close();	
+		}
 	}
 	
 	public void salvar() {
 		/**
-		 * CODIGO PARA UTILIZAR CON LA CLASE DATABASE HELPER
-		 * 
+		 * PERSISTENCIA CON JDBC
+		 * ---------------------
 		 * DataBaseHelper<Libro> db = new DataBaseHelper<Libro>();
 		 * String consultaSQL = "update libros set titulo='" + this.titulo + 
 		 *										"', categoria='" + this.categoria + 
@@ -115,17 +178,42 @@ public class Libro {
 		 * db.modificarRegistro(consultaSQL);
 		 */
 		
-		SessionFactory sesionFactoria = HibernateHelper.getSessionFactory();
-		Session sesion = sesionFactoria.openSession();
-		Transaction transaccion = sesion.beginTransaction();
-		sesion.saveOrUpdate(this);
-		transaccion.commit();
-		sesion.close();
+		/**
+		 * PERSISTENCIA CON HIBERNATE
+		 * --------------------------
+		 * 
+		 * SessionFactory sesionFactoria = HibernateHelper.getSessionFactory();
+		 * Session sesion = sesionFactoria.openSession();
+		 * Transaction transaccion = sesion.beginTransaction();
+		 * sesion.saveOrUpdate(this);
+		 * transaccion.commit();
+		 * sesion.close();
+		 */
+		
+		/**
+		 * PERSISTENCIA CON JPA
+		 * --------------------
+		 */
+		EntityManagerFactory entityManagerFactory = JPAHelper.getEntityManagerFactory();
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		EntityTransaction transaccion = null;
+		try {
+			transaccion = entityManager.getTransaction();
+			transaccion.begin();
+			entityManager.merge(this);
+			transaccion.commit();
+		} catch(PersistenceException e) {
+			entityManager.getTransaction().rollback();
+			throw e;
+		} finally {
+			entityManager.close();
+		}
 	}
 	
 	public static Libro buscarPorClave(String isbn) {
 		/**
-		 * CODIGO PARA UTILIZAR CON LA CLASE DATABASE HELPER
+		 * CONSULTA CON JDBC
+		 * -----------------
 		 * 
 		 * DataBaseHelper<Libro> db = new DataBaseHelper<Libro>();
 		 * String consultaSQL = "select * from libros where isbn='" + isbn + "'";
@@ -133,17 +221,34 @@ public class Libro {
 		 * return libros.get(0);
 		 */
 		
-		SessionFactory sesionFactoria = HibernateHelper.getSessionFactory();
-		Session sesion = sesionFactoria.openSession();
-		Libro libro = (Libro)sesion.get(Libro.class, isbn);
-		sesion.close();
+		/**
+		 * CONSULTA CON HIBERNATE
+		 * ----------------------
+		 * 
+		 * SessionFactory sesionFactoria = HibernateHelper.getSessionFactory();
+		 * Session sesion = sesionFactoria.openSession();
+		 * Libro libro = (Libro)sesion.get(Libro.class, isbn);
+		 * sesion.close();
+		 * return libro; 
+		 */
+		
+		/**
+		 * CONSULTA CON JPA
+		 * ----------------
+		 */
+		EntityManagerFactory entityManagerFactory = JPAHelper.getEntityManagerFactory();
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		TypedQuery<Libro> consulta = entityManager.createNamedQuery("buscarPorClave", Libro.class);
+		consulta.setParameter(1, isbn);
+		Libro libro = consulta.getSingleResult();
+		entityManager.close();
 		return libro;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static List<Libro> buscarPorCategoria(String categoria) {
+	public static List<Libro> buscarPorCategoria(Categoria categoria) {
 		/**
-		 * CODIGO PARA UTILIZAR CON LA CLASE DATABASE HELPER
+		 * CONSULTA CON JDBC
+		 * -----------------
 		 * 
 		 * DataBaseHelper<Libro> db = new DataBaseHelper<Libro>();
 		 * String consultaSQL = "select * from libros where categoria='" + categoria + "'";
@@ -151,19 +256,36 @@ public class Libro {
 		 * return libros;
 		 */
 		
-		SessionFactory sesionFactoria = HibernateHelper.getSessionFactory();
-		Session sesion = sesionFactoria.openSession();
-		Query consulta = sesion.createQuery("from Libro libro where libro.categoria=:categoria ");
-		consulta.setString("categoria", categoria);
-		List<Libro> listaDeLibros = consulta.list();
-		sesion.close();
+		/**
+		 * CONSULTA CON HIBERNATE
+		 * ---------------------- 
+		 * 		 
+		 * SessionFactory sesionFactoria = HibernateHelper.getSessionFactory();
+		 * Session sesion = sesionFactoria.openSession();
+		 * Query consulta = sesion.createQuery("from Libro libro where libro.categoria=:categoria ");
+		 * consulta.setString("categoria", categoria);
+		 * List<Libro> listaDeLibros = consulta.list();
+		 * sesion.close();
+		 * return listaDeLibros; 
+		 */
+		
+		/**
+		 * CONSULTA CON JPA
+		 * ----------------
+		 */
+		EntityManagerFactory entityManagerFactory = JPAHelper.getEntityManagerFactory();
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		TypedQuery<Libro> consulta = entityManager.createNamedQuery("buscarPorCategoria", Libro.class);
+		consulta.setParameter(1, categoria);
+		List<Libro> listaDeLibros = consulta.getResultList();
+		entityManager.close();
 		return listaDeLibros;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static List<Libro> buscarTodos() {
 		/**
-		 * CODIGO PARA UTILIZAR CON LA CLASE DATABASE HELPER
+		 * CONSULTA CON JDBC
+		 * -----------------
 		 * 
 		 * DataBaseHelper<Libro> db = new DataBaseHelper<Libro>();
 		 * String consultaSQL = "select * from libros";
@@ -171,35 +293,36 @@ public class Libro {
 		 * return listaDeLibros;
 		 */
 		
-		SessionFactory sesionFactoria = HibernateHelper.getSessionFactory();
-		Session sesion = sesionFactoria.openSession();
-		// Esta	clausula 'rigth join fetch' ejecuta una consulta de joins entre
-		// las dos tablas, cargando todos los datos en una única consulta.
+		/**
+		 * CONSULTA CON HIBERNATE
+		 * ----------------------
+		 * 
+		 * SessionFactory sesionFactoria = HibernateHelper.getSessionFactory();
+		 * Session sesion = sesionFactoria.openSession();
+		 * 
+		 * // Este 'JOIN FETCH' se utiliza para cargar de forma agresiva el extremo ONE
+		 * // de la asociacion, evitando el lazy loaded y el problema de las N+1 consultas  
+		 * 		
+		 * // Así solo realizamos una consulta a una tabla cuando accedemos a un campo de la
+		 * // entidad Categoria desde la capa de presentación: "libro[x].categoria.nombre"
+		 * 
+		 * String consulta = "from Libro libro right join fetch libro.categoria";
+		 * List<Libro> listaDeLibros = sesion.createQuery(consulta).list();
+		 * sesion.close();
+		 * return listaDeLibros; 
+		 */
 		
-		// Así evitamos tener que hacer varias consultas cuando accedemos a un campo de la
-		// entidad Categoria desde la capa de presentación: "libro[x].categoria.nombre"
-		String consulta = "from Libro libro right join fetch libro.categoria";
-		List<Libro> listaDeLibros = sesion.createQuery(consulta).list();
-		sesion.close();
+		/**
+		 * CONSULTA CON JPA
+		 * ----------------
+		 */
+		EntityManagerFactory entityManagerFactory = JPAHelper.getEntityManagerFactory();
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		// al igual que con Hibernate hacemos una carga agresiva (eager) del extremo ONE
+		TypedQuery<Libro> consulta = entityManager.createNamedQuery("buscarTodos", Libro.class);
+		List<Libro> listaDeLibros = consulta.getResultList();
+		entityManager.close();
 		return listaDeLibros;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static List<String> buscarTodasLasCategorias() {
-		/**
-		 * CODIGO PARA UTILIZAR CON LA CLASE DATABASE HELPER
-		 * 
-		 * DataBaseHelper<String> bd = new DataBaseHelper<String>();
-		 * String consultaSQL = "select distinct(categoria) from libros";
-		 * List<String> listaDeCategorias = bd.seleccionarRegistros(consultaSQL, String.class);
-		 * return listaDeCategorias;
-		 */
-		
-		SessionFactory sesionFactoria = HibernateHelper.getSessionFactory();
-		Session sesion = sesionFactoria.openSession();
-		String consulta = "select distinct libro.categoria from Libro libro";
-		List<String> listaDeCategorias = sesion.createQuery(consulta).list();
-		sesion.close();
-		return listaDeCategorias;
-	}
 }
