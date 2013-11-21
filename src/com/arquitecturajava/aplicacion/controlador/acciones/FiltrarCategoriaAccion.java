@@ -7,20 +7,28 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.arquitecturajava.aplicacion.beans.Libro;
 import com.arquitecturajava.aplicacion.beans.Categoria;
+import com.arquitecturajava.aplicacion.dao.CategoriaDAO;
+import com.arquitecturajava.aplicacion.dao.LibroDAO;
+import com.arquitecturajava.aplicacion.dao.jpa.CategoriaDAOJPAImpl;
+import com.arquitecturajava.aplicacion.dao.jpa.LibroDAOJPAImpl;
 
 public class FiltrarCategoriaAccion extends Accion {
 
 	public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
+		LibroDAO libroDAO = new LibroDAOJPAImpl();
+		CategoriaDAO categoriaDAO = new CategoriaDAOJPAImpl();
+		
 		List<Libro> listaDeLibros = null;
-		List<Categoria> listaDeCategorias = Categoria.buscarTodos();
+		List<Categoria> listaDeCategorias = categoriaDAO.buscarTodos();
+		
 		String categoriaId = request.getParameter("categoriaId"); 
 		Categoria categoria = new Categoria(categoriaId);
 		
 		if(categoriaId == null || categoriaId.equals("seleccionar")) {
-			listaDeLibros = Libro.buscarTodos();
+			listaDeLibros = libroDAO.buscarTodos();
 		}
 		else {
-			listaDeLibros = Libro.buscarPorCategoria(categoria);
+			listaDeLibros = libroDAO.buscarPorCategoria(categoria);
 		}
 		
 		request.setAttribute("listaDeLibros", listaDeLibros);
