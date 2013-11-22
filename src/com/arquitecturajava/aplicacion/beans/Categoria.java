@@ -10,10 +10,11 @@ import javax.persistence.Table;
 
 
 /**
- * Clase YA NO Active Record que almacena todas las consultas que 
- * manejen los datos que contiene la tabla 'categorias'
- * @author eladio
+ * Bean que representa a la tabla 'categorias' de la BB.DD.
+ * Relacción 1-N con la tabla 'libros'.
+ * Clave principal: id
  * 
+ * @author eladio
  */
 @Entity
 @Table(name="categorias")
@@ -26,6 +27,8 @@ public class Categoria {
 	@JoinColumn(name="id")
 	private List<Libro> listaDeLibros;
 	
+	// Constructores
+	
 	public Categoria() {
 	}
 	
@@ -37,6 +40,8 @@ public class Categoria {
 		this.id = id;
 		this.nombre = nombre;
 	}
+	
+	// Getters y Setters
 	
 	public String getId() {
 		return this.id;

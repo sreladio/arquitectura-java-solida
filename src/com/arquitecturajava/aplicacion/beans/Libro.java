@@ -9,13 +9,13 @@ import javax.persistence.Table;
 import javax.persistence.Id;
 
 /**
- * Clase YA NO Active Record que almacena todas las consultas que 
- * manejen los datos que contiene la tabla 'libros'
- * @author eladio
+ * Bean que representa a la tabla 'libros' de la BB.DD. 
+ * Relacción N-1 con la tabla 'categorías'.
+ * Clave foránea: categoría_id
  * 
+ * @author eladio
  */
 @NamedQueries({
-	// @NamedQuery(name="buscarTodos", query="select l from Libro l JOIN FETCH l.categoria"),
 	@NamedQuery(name="buscarPorCategoria", query="select l from Libro l where l.categoria=?1"),
 	@NamedQuery(name="buscarPorClave", query="select l from Libro l where l.isbn=?1")
 })
@@ -30,6 +30,8 @@ public class Libro {
 	@JoinColumn(name="categoria_id")
 	private Categoria categoria;
 	
+	// Constructores
+	
 	public Libro() {
 	}
 	
@@ -42,6 +44,8 @@ public class Libro {
 		this.titulo = titulo;
 		this.categoria = categoria;
 	}
+	
+	// Getters y Setters
 	
 	public String getIsbn() {
 		return this.isbn;

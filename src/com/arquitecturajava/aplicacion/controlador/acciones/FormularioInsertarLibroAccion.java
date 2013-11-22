@@ -7,14 +7,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.arquitecturajava.aplicacion.beans.Categoria;
 import com.arquitecturajava.aplicacion.dao.CategoriaDAO;
-import com.arquitecturajava.aplicacion.dao.jpa.CategoriaDAOJPAImpl;
+import com.arquitecturajava.aplicacion.dao.DAOAbstractFactory;
+import com.arquitecturajava.aplicacion.dao.DAOFactory;
 
 public class FormularioInsertarLibroAccion extends Accion {
 
 	public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
-		CategoriaDAO categoriaDAO = new CategoriaDAOJPAImpl();
+		DAOFactory factoria = DAOAbstractFactory.getInstance();
+		CategoriaDAO categoriaDAO = factoria.getCategoriaDAO();
+		
 		List<Categoria> listaDeCategorias = categoriaDAO.buscarTodos();
 		request.setAttribute("listaDeCategorias", listaDeCategorias);
+		
 		return "FormularioInsertarLibro.jsp";
 	}
 }

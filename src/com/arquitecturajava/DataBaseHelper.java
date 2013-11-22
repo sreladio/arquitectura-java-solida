@@ -13,10 +13,12 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 /**
+ * Clase de ayuda para el acceso a la BB.DD mediante JDBC.
  * 
  * @author eladio
  *
- * @param <T>
+ * @param <T> Tipo al que se debe de convertir el ResultSet en las consultas de
+ * selección.
  */
 public class DataBaseHelper<T> {
 	private static final Logger log = Logger.getLogger(DataBaseHelper.class); 

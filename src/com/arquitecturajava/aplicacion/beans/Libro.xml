@@ -1,3 +1,7 @@
+<!-- Fichero xml de mapeo de una Entidad con Hibernate -->
+
+<!-- NOTA: Este fichero se encuentra en desuso en favor de las anotaciones. -->
+
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
