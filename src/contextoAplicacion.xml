@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+        
+    <!-- clases que queremos que sean instanciadas por la factoría de String -->
+	<bean id="libroDAO"	class="com.arquitecturajava.aplicacion.dao.jpa.LibroDAOJPAImpl"></bean>
+	<bean id="categoriaDAO"	class="com.arquitecturajava.aplicacion.dao.jpa.CategoriaDAOJPAImpl"></bean>
+</beans>
+        
