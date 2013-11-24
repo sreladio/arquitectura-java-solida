@@ -1,19 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
   <display-name>ArquitecturaJava</display-name>
+  
+  <!-- define cuál va a ser el nombre del fichero de configuración que Spring debe cargar -->
+  <context-param>
+	<param-name>contextConfigLocation</param-name>
+	<param-value>classpath:contextoAplicacion.xml</param-value>
+  </context-param>
+  
+  <!-- el listener de la aplicación permite que el framework Spring se cargue
+  	   y lea el fichero de configuración antes de que la aplicación	web	
+  	   entre en funcionamiento
+   -->
+  <listener>
+	<listener-class>org.springframework.web.context.ContextLoaderListener
+	</listener-class>
+  </listener>
+  
   <welcome-file-list>
     <welcome-file>MostrarLibros</welcome-file>
   </welcome-file-list>
+  
   <error-page>
     <exception-type>java.lang.RuntimeException</exception-type>
     <location>/Error.jsp</location>
   </error-page>
+  
   <servlet>
     <description></description>
     <display-name>ControladorLibros</display-name>
     <servlet-name>ControladorLibros</servlet-name>
     <servlet-class>com.arquitecturajava.aplicacion.controlador.ControladorLibros</servlet-class>
   </servlet>
+  
   <servlet-mapping>
     <servlet-name>ControladorLibros</servlet-name>
     <url-pattern>/ControladorLibros</url-pattern>
