@@ -2,11 +2,11 @@ package com.arquitecturajava.aplicacion.servicios.impl;
 
 import java.util.List;
 
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.arquitecturajava.aplicacion.beans.Categoria;
 import com.arquitecturajava.aplicacion.beans.Libro;
 import com.arquitecturajava.aplicacion.dao.CategoriaDAO;
-import com.arquitecturajava.aplicacion.dao.DAOAbstractFactory;
-import com.arquitecturajava.aplicacion.dao.DAOFactory;
 import com.arquitecturajava.aplicacion.dao.LibroDAO;
 import com.arquitecturajava.aplicacion.servicios.ServicioLibros;
 
@@ -16,13 +16,22 @@ public class ServicioLibrosImpl implements ServicioLibros {
 	private CategoriaDAO categoriaDAO = null;
 	
 	/**
-	 * En el constructor se encuentra el código de inicialización
-	 * de acceso al DAO a través de la factoría abstracta
+	 * En el constructor se encuentra el código de inicialización de acceso al DAO
 	 */
 	public ServicioLibrosImpl() {
-		DAOFactory factoria = DAOAbstractFactory.getInstance();
-		libroDAO = factoria.getLibroDAO();
-		categoriaDAO = factoria.getCategoriaDAO();
+		// Inicialización a través de una FACTORÍA ABSTRACTA:
+		// -------------------------------------------------
+		
+		//DAOFactory factoria = DAOAbstractFactory.getInstance();
+		//libroDAO = factoria.getLibroDAO();
+		//categoriaDAO = factoria.getCategoriaDAO();
+		
+		// Inicialización a través del framework SPRING:
+		// --------------------------------------------
+		
+		ClassPathXmlApplicationContext factoria = new ClassPathXmlApplicationContext("contextoAplicacion.xml"); // factoría de Spring que busca un fichero dentro del classpath
+		libroDAO= (LibroDAO)factoria.getBean("libroDAO");
+		categoriaDAO=(CategoriaDAO)factoria.getBean("categoriaDAO");
 	}
 	
 	@Override
