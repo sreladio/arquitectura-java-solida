@@ -2,8 +2,6 @@ package com.arquitecturajava.aplicacion.servicios.impl;
 
 import java.util.List;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import com.arquitecturajava.aplicacion.beans.Categoria;
 import com.arquitecturajava.aplicacion.beans.Libro;
 import com.arquitecturajava.aplicacion.dao.CategoriaDAO;
@@ -16,7 +14,9 @@ public class ServicioLibrosImpl implements ServicioLibros {
 	private CategoriaDAO categoriaDAO = null;
 	
 	/**
-	 * En el constructor se encuentra el código de inicialización de acceso al DAO
+	 * Utilizamos Spring como framework de Inyección de dependencias para la
+	 * inicialización de libroDAO y categoriaDAO a través del fichero xml,
+	 * el cual usará los getters y setters de esta clase para dicha tarea.
 	 */
 	public ServicioLibrosImpl() {
 		// Inicialización a través de una FACTORÍA ABSTRACTA:
@@ -29,10 +29,12 @@ public class ServicioLibrosImpl implements ServicioLibros {
 		// Inicialización a través del framework SPRING:
 		// --------------------------------------------
 		
-		ClassPathXmlApplicationContext factoria = new ClassPathXmlApplicationContext("contextoAplicacion.xml"); // factoría de Spring que busca un fichero dentro del classpath
-		libroDAO= (LibroDAO)factoria.getBean("libroDAO");
-		categoriaDAO=(CategoriaDAO)factoria.getBean("categoriaDAO");
+		//ClassPathXmlApplicationContext factoria = new ClassPathXmlApplicationContext("contextoAplicacion.xml");
+		//libroDAO= (LibroDAO)factoria.getBean("libroDAO");
+		//categoriaDAO=(CategoriaDAO)factoria.getBean("categoriaDAO");
 	}
+	
+	// CRUD
 	
 	@Override
 	public void insertarLibro(Libro libro) {
@@ -49,6 +51,8 @@ public class ServicioLibrosImpl implements ServicioLibros {
 		this.libroDAO.salvar(libro);
 	}
 
+	// Finders
+	
 	@Override
 	public List<Libro> buscarTodosLosLibros() {
 		return this.libroDAO.buscarTodos();
@@ -67,6 +71,28 @@ public class ServicioLibrosImpl implements ServicioLibros {
 	@Override
 	public List<Categoria> buscarTodasLasCategorias() {
 		return this.categoriaDAO.buscarTodos();
+	}
+
+	// Inyección de dependencias
+	
+	@Override
+	public LibroDAO getLibroDAO() {
+		return this.libroDAO;
+	}
+
+	@Override
+	public CategoriaDAO getCategoriaDAO() {
+		return this.categoriaDAO;
+	}
+
+	@Override
+	public void setLibroDAO(LibroDAO libroDAO) {
+		this.libroDAO = libroDAO;
+	}
+
+	@Override
+	public void setCategoriaDAO(CategoriaDAO categoriaDAO) {
+		this.categoriaDAO = categoriaDAO;
 	}
 
 }
