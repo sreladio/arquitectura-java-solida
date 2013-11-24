@@ -7,20 +7,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.arquitecturajava.aplicacion.beans.Libro;
 import com.arquitecturajava.aplicacion.beans.Categoria;
-import com.arquitecturajava.aplicacion.dao.CategoriaDAO;
-import com.arquitecturajava.aplicacion.dao.DAOAbstractFactory;
-import com.arquitecturajava.aplicacion.dao.DAOFactory;
-import com.arquitecturajava.aplicacion.dao.LibroDAO;
+import com.arquitecturajava.aplicacion.servicios.ServicioLibros;
+import com.arquitecturajava.aplicacion.servicios.impl.ServicioLibrosImpl;
 
 public class MostrarLibrosAccion extends Accion {
 
 	public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
-		DAOFactory factoria = DAOAbstractFactory.getInstance();
-		LibroDAO libroDAO = factoria.getLibroDAO();
-		CategoriaDAO categoriaDAO = factoria.getCategoriaDAO();
+		ServicioLibros servicioLibros = new ServicioLibrosImpl();
 		
-		List<Libro> listaDeLibros = libroDAO.buscarTodos();
-		List<Categoria> listaDeCategorias = categoriaDAO.buscarTodos();
+		List<Libro> listaDeLibros = servicioLibros.buscarTodosLosLibros();
+		List<Categoria> listaDeCategorias = servicioLibros.buscarTodasLasCategorias();
 		
 		request.setAttribute("listaDeLibros", listaDeLibros);
 		request.setAttribute("listaDeCategorias", listaDeCategorias);
