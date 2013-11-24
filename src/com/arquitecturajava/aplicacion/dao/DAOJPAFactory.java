@@ -7,8 +7,11 @@ import com.arquitecturajava.aplicacion.dao.jpa.LibroDAOJPAImpl;
  * FACTORÍA que se encarga de crear todos los DAO's que se implementen
  * mediante el estándard JPA.
  * 
+ * En desuso a favor del framework Spring
+ * 
  * @author eladio
  */
+@Deprecated
 public class DAOJPAFactory implements DAOFactory {
 
 	@Override

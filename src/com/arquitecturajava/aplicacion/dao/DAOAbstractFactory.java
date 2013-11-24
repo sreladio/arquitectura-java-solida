@@ -2,9 +2,12 @@ package com.arquitecturajava.aplicacion.dao;
 
 /**
  * FACTORÍA ABSTRACTA
- *  
+ * 
+ * En desuso a favor del framework Spring
+ * 
  * @author eladio
  */
+@Deprecated
 public abstract class DAOAbstractFactory {
 	
 	public static DAOFactory getInstance() {
