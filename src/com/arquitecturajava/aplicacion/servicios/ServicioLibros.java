@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.arquitecturajava.aplicacion.beans.Libro;
 import com.arquitecturajava.aplicacion.beans.Categoria;
+import com.arquitecturajava.aplicacion.dao.CategoriaDAO;
+import com.arquitecturajava.aplicacion.dao.LibroDAO;
 
 /**
  * Proporciona un servício de inicialización del acceso a la capa DAO,
@@ -14,13 +16,20 @@ import com.arquitecturajava.aplicacion.beans.Categoria;
  */
 public interface ServicioLibros {
 	
+	// CRUD
 	public void insertarLibro(Libro libro);
 	public void borrarLibro(Libro libro);
 	public void salvarLibro(Libro libro);
 	
+	// Finders
 	public List<Libro> buscarTodosLosLibros();
 	public Libro buscarLibroPorClave(String isbn);
 	public List<Libro> buscarLibrosPorCategoria(Categoria categoria);
-	
 	public List<Categoria> buscarTodasLasCategorias();
+	
+	// Getters y Setters para DI
+	public LibroDAO getLibroDAO();
+	public CategoriaDAO getCategoriaDAO();
+	public void setLibroDAO(LibroDAO libroDAO);
+	public void setCategoriaDAO(CategoriaDAO categoriaDAO);
 }
