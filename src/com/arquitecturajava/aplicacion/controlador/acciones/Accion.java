@@ -3,6 +3,8 @@ package com.arquitecturajava.aplicacion.controlador.acciones;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 /**
  * Nivel más alto de la jerarquía de acciones
  * 
@@ -34,5 +36,17 @@ public abstract class Accion {
 		}
 		
 		return accion;
+	}
+	
+	/**
+	 * Arranca el framework Spring, normalmente para inicializar la clase de
+	 * servicios que nos dará acceso al DAO
+	 * @param nombre Nombre del bean en el fichero contextoAplicacion.xml (serviciosLibro)
+	 * @return Instancia del bean. Instancia de la clase servicios
+	 */
+	public Object getBean(String nombre) {
+		// factoría de Spring que busca un fichero dentro del classpath
+		ClassPathXmlApplicationContext factoria = new ClassPathXmlApplicationContext("contextoAplicacion.xml");
+		return factoria.getBean(nombre);
 	}
 }
