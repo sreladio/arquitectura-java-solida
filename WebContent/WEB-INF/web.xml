@@ -13,8 +13,7 @@
   	   entre en funcionamiento
    -->
   <listener>
-	<listener-class>org.springframework.web.context.ContextLoaderListener
-	</listener-class>
+	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
   
   <welcome-file-list>
