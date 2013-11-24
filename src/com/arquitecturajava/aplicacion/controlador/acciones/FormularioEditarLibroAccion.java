@@ -13,7 +13,7 @@ import com.arquitecturajava.aplicacion.servicios.impl.ServicioLibrosImpl;
 public class FormularioEditarLibroAccion extends Accion {
 
 	public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
-		ServicioLibros servicioLibros = new ServicioLibrosImpl();
+		ServicioLibros servicioLibros = (ServicioLibrosImpl)getBean("servicioLibros");
 				
 		String isbn = request.getParameter("isbn");
 		

@@ -13,7 +13,7 @@ import com.arquitecturajava.aplicacion.servicios.impl.ServicioLibrosImpl;
 public class FiltrarCategoriaAccion extends Accion {
 
 	public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
-		ServicioLibros servicioLibros = new ServicioLibrosImpl();
+		ServicioLibros servicioLibros = (ServicioLibrosImpl)getBean("servicioLibros");
 		
 		List<Libro> listaDeLibros = null;
 		List<Categoria> listaDeCategorias = servicioLibros.buscarTodasLasCategorias();

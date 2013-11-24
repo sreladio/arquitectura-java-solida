@@ -18,7 +18,7 @@ public class SalvarLibroAccion extends Accion {
 		Categoria categoria = new Categoria(categoriaId);
 		Libro libro = new Libro(isbn, titulo, categoria);
 		
-		ServicioLibros servicioLibros = new ServicioLibrosImpl();		
+		ServicioLibros servicioLibros = (ServicioLibrosImpl)getBean("servicioLibros");		
 		servicioLibros.salvarLibro(libro);
 		
 		return "/MostrarLibros";

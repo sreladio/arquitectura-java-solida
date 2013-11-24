@@ -10,7 +10,7 @@ import com.arquitecturajava.aplicacion.servicios.impl.ServicioLibrosImpl;
 public class BorrarLibroAccion extends Accion {
 
 	public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
-		ServicioLibros servicioLibros = new ServicioLibrosImpl();
+		ServicioLibros servicioLibros = (ServicioLibrosImpl)getBean("servicioLibros");
 		String isbn = request.getParameter("isbn");
 		
 		Libro libro = new Libro(isbn);

@@ -12,7 +12,7 @@ import com.arquitecturajava.aplicacion.servicios.impl.ServicioLibrosImpl;
 public class FormularioInsertarLibroAccion extends Accion {
 
 	public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
-		ServicioLibros servicioLibros = new ServicioLibrosImpl();
+		ServicioLibros servicioLibros = (ServicioLibrosImpl)getBean("servicioLibros");
 				
 		List<Categoria> listaDeCategorias = servicioLibros.buscarTodasLasCategorias();
 		request.setAttribute("listaDeCategorias", listaDeCategorias);
