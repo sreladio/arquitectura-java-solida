@@ -18,7 +18,7 @@ public class InsertarLibroAccion extends Accion {
 		Categoria categoria = new Categoria(categoriaId);
 		Libro libro = new Libro(isbn, titulo, categoria);
 		
-		ServicioLibros servicioLibros = (ServicioLibrosImpl)getBean("servicioLibros");
+		ServicioLibros servicioLibros = (ServicioLibrosImpl)getBean("servicioLibros", request);
 		servicioLibros.insertarLibro(libro);
 		
 		return "/MostrarLibros";

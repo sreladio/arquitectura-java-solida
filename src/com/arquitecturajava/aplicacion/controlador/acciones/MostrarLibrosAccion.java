@@ -13,7 +13,7 @@ import com.arquitecturajava.aplicacion.servicios.impl.ServicioLibrosImpl;
 public class MostrarLibrosAccion extends Accion {
 
 	public String ejecutar(HttpServletRequest request, HttpServletResponse response) {
-		ServicioLibros servicioLibros = (ServicioLibrosImpl)getBean("servicioLibros");
+		ServicioLibros servicioLibros = (ServicioLibrosImpl)getBean("servicioLibros", request);
 		
 		List<Libro> listaDeLibros = servicioLibros.buscarTodosLosLibros();
 		List<Categoria> listaDeCategorias = servicioLibros.buscarTodasLasCategorias();
