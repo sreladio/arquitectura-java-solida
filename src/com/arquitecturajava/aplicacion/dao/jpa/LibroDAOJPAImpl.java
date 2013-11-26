@@ -26,7 +26,6 @@ public class LibroDAOJPAImpl extends GenericDAOJPAImpl <Libro, String> implement
 	 * @return Lista de libros
 	 */
 	public List<Libro> buscarPorCategoria(Categoria categoria) {
-		EntityManagerFactory entityManagerFactory = JPAHelper.getEntityManagerFactory();
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		List<Libro> listaDeLibros = null;
 		TypedQuery<Libro> consulta = entityManager.createNamedQuery("buscarPorCategoria", Libro.class);
