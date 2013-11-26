@@ -3,7 +3,6 @@ package com.arquitecturajava.aplicacion.dao.jpa;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
-import com.arquitecturajava.JPAHelper;
 import com.arquitecturajava.aplicacion.dao.GenericDAO;
 
 import java.lang.reflect.Type;
@@ -24,6 +23,7 @@ import javax.persistence.TypedQuery;
  */
 public class GenericDAOJPAImpl<T, Id> implements GenericDAO <T, Id> {
 
+	protected EntityManagerFactory entityManagerFactory;
 	private Class<T> claseDePersistencia;
 	
 	/**
@@ -36,12 +36,21 @@ public class GenericDAOJPAImpl<T, Id> implements GenericDAO <T, Id> {
         this.claseDePersistencia = (Class<T>) parametrosClasePadre.getActualTypeArguments()[0];
 	}
 	
+	// Inyección de dependencias
+	
+	public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
+		this.entityManagerFactory = entityManagerFactory;
+	}
+	
+	public EntityManagerFactory getEntityManagerFactory() {
+		return this.entityManagerFactory;
+	}
+	
 	/**
 	 * Guarda una entidad en la BB.DD utilizando el standard JPA
 	 * @param objeto Entidad a persistir
 	 */
 	public void insertar(T objeto) {		
-		EntityManagerFactory entityManagerFactory = JPAHelper.getEntityManagerFactory();
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		EntityTransaction transaccion = null;
 		try {
@@ -62,8 +71,7 @@ public class GenericDAOJPAImpl<T, Id> implements GenericDAO <T, Id> {
 	 * @param objeto Entidad a eliminar
 	 */
 	public void borrar(T objeto) {
-		EntityManagerFactory entityManagerFactory = JPAHelper.getEntityManagerFactory();
-		EntityManager  entityManager = entityManagerFactory.createEntityManager();
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		EntityTransaction transaccion = null;
 		try {
 			transaccion = entityManager.getTransaction();
@@ -83,7 +91,6 @@ public class GenericDAOJPAImpl<T, Id> implements GenericDAO <T, Id> {
 	 * @param objeto Entidad a modificar
 	 */
 	public void salvar(T objeto) {
-		EntityManagerFactory entityManagerFactory = JPAHelper.getEntityManagerFactory();
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		EntityTransaction transaccion = null;
 		try {
@@ -104,7 +111,6 @@ public class GenericDAOJPAImpl<T, Id> implements GenericDAO <T, Id> {
 	 * @return Lista con todos los elementos de la tabla
 	 */
 	public List<T> buscarTodos() {
-		EntityManagerFactory entityManagerFactory = JPAHelper.getEntityManagerFactory();
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		List<T> listaDeObjetos = null;
 		String q = "select o from " + claseDePersistencia.getSimpleName() + " o";
@@ -124,7 +130,6 @@ public class GenericDAOJPAImpl<T, Id> implements GenericDAO <T, Id> {
 	 * @return T Objeto cuya clave coincida con la que se le pasa como parámetro
 	 */
 	public T buscarPorClave(Id id) {
-		EntityManagerFactory entityManagerFactory = JPAHelper.getEntityManagerFactory();
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		T objeto = null;
 		TypedQuery<T> consulta = entityManager.createNamedQuery("buscarPorClave", claseDePersistencia);
