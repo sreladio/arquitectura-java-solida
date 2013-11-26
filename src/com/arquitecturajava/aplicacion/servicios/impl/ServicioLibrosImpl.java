@@ -14,7 +14,7 @@ public class ServicioLibrosImpl implements ServicioLibros {
 	private CategoriaDAO categoriaDAO = null;
 	
 	/**
-	 * Utilizamos Spring como framework de Inyección de dependencias para la
+	 * Utilizamos Spring como framework de inyección de dependencias para la
 	 * inicialización de libroDAO y categoriaDAO a través del fichero xml,
 	 * el cual usará los getters y setters de esta clase para dicha tarea.
 	 */
