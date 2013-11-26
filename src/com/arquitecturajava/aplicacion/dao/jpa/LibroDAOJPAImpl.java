@@ -25,17 +25,20 @@ public class LibroDAOJPAImpl extends GenericDAOJPAImpl <Libro, String> implement
 	 * @param categoria Clave foránea de la entidad Libro
 	 * @return Lista de libros
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Libro> buscarPorCategoria(Categoria categoria) {
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		List<Libro> listaDeLibros = null;
-		TypedQuery<Libro> consulta = entityManager.createNamedQuery("buscarPorCategoria", Libro.class);
-		consulta.setParameter(1, categoria);
-		try {
-			listaDeLibros = consulta.getResultList();
-		} finally {
-			entityManager.close();
-		}
-		return listaDeLibros;
+//		EntityManager entityManager = entityManagerFactory.createEntityManager();
+//		List<Libro> listaDeLibros = null;
+//		TypedQuery<Libro> consulta = entityManager.createNamedQuery("buscarPorCategoria", Libro.class);
+//		consulta.setParameter(1, categoria);
+//		try {
+//			listaDeLibros = consulta.getResultList();
+//		} finally {
+//			entityManager.close();
+//		}
+//		return listaDeLibros;
+		
+		return this.plantillaJPA.findByNamedQuery("buscarPorCategoria", categoria);
 	}
 	
 	/**
