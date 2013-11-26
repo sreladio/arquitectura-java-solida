@@ -2,12 +2,37 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
         
     <!-- clases que queremos que sean instanciadas por la factoría de String -->
-	<bean id="libroDAO"	class="com.arquitecturajava.aplicacion.dao.jpa.LibroDAOJPAImpl"></bean>
-	<bean id="categoriaDAO"	class="com.arquitecturajava.aplicacion.dao.jpa.CategoriaDAOJPAImpl"></bean>
+    
+    <bean id="fuenteDeDatos" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    	<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost/arquitecturajava" />
+		<property name="username" value="root" />
+		<property name="password" value="hardflip" />
+	</bean>
+    
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="arquitecturaJava" />
+		<property name="dataSource" ref="fuenteDeDatos" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="databasePlatform" value="org.hibernate.dialect.MySQL5Dialect" />
+				<property name="showSql" value="true" />
+			</bean>
+		</property>
+	</bean>
+    
+	<bean id="libroDAO"	class="com.arquitecturajava.aplicacion.dao.jpa.LibroDAOJPAImpl">
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
+	</bean>
+	
+	<bean id="categoriaDAO"	class="com.arquitecturajava.aplicacion.dao.jpa.CategoriaDAOJPAImpl">
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
+	</bean>
+	
 	<bean id="servicioLibros" class="com.arquitecturajava.aplicacion.servicios.impl.ServicioLibrosImpl">
 		<!-- inyección de dependencias  -->
 		<property name="libroDAO" ref="libroDAO"></property>
