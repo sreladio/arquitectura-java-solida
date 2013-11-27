@@ -7,20 +7,20 @@ import java.util.List;
 
 import com.arquitecturajava.aplicacion.dao.GenericDAO;
 
-import org.springframework.orm.jpa.JpaTemplate;
+import org.springframework.orm.jpa.support.JpaDaoSupport;
 
 /**
- * Implementación genérica del DAO genérico siguiendo el estandard JPA
+ * Implementación genérica del DAO genérico siguiendo el estandard JPA.
+ * Utiliza la plantilla JpaTemplate del framework spring a través de la
+ * clase JpaDaoSupport que proporciona el propio framework.
  * 
  * @author eladio
  *
  * @param <T> Tipo de clase de persistencia
  * @param <Id> Tipo del campo de la clave principal de la tabla
  */
-public class GenericDAOJPAImpl<T, Id> implements GenericDAO <T, Id> {
+public class GenericDAOJPAImpl<T, Id> extends JpaDaoSupport implements GenericDAO <T, Id> {
 
-	// protected EntityManagerFactory entityManagerFactory;
-	protected JpaTemplate plantillaJPA;
 	private Class<T> claseDePersistencia;
 	
 	/**
@@ -33,68 +33,25 @@ public class GenericDAOJPAImpl<T, Id> implements GenericDAO <T, Id> {
         this.claseDePersistencia = (Class<T>) parametrosClasePadre.getActualTypeArguments()[0];
 	}
 	
-	// Inyección de dependencias
-	
-//	public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
-//		this.entityManagerFactory = entityManagerFactory;
-//	}
-//	
-//	public EntityManagerFactory getEntityManagerFactory() {
-//		return this.entityManagerFactory;
-//	}
-	
-	public void setPlantillaJPA(JpaTemplate plantillaJPA) {
-		this.plantillaJPA = plantillaJPA;
-	}
-	
-	public JpaTemplate setPlantillaJPA() {
-		return this.plantillaJPA;
-	}
-	
 	// CRUD
+	// ------------------------------------------------------------------
 	
 	/**
 	 * Guarda una entidad en la BB.DD utilizando el standard JPA
 	 * @param objeto Entidad a persistir
 	 */
 	public void insertar(T objeto) {		
-//		EntityManager entityManager = entityManagerFactory.createEntityManager();
-//		EntityTransaction transaccion = null;
-//		try {
-//			transaccion = entityManager.getTransaction();
-//			transaccion.begin();
-//			entityManager.persist(objeto);
-//			transaccion.commit();
-//		} catch(PersistenceException e) {
-//			entityManager.getTransaction().rollback();
-//			throw e;
-//		} finally {
-//			entityManager.close();
-//		}
-		
-		this.plantillaJPA.persist(objeto);
+		getJpaTemplate().persist(objeto);
+		System.out.println("INSERTANDO OBJETO");
 	}
 	
 	/**
 	 * Elimina una entidad de la BB.DD utilizando el standard JPA
 	 * @param objeto Entidad a eliminar
 	 */
-	public void borrar(T objeto) {
-//		EntityManager entityManager = entityManagerFactory.createEntityManager();
-//		EntityTransaction transaccion = null;
-//		try {
-//			transaccion = entityManager.getTransaction();
-//			transaccion.begin();
-//			entityManager.remove(entityManager.merge(objeto));
-//			transaccion.commit();
-//		} catch(PersistenceException e) {
-//			entityManager.getTransaction().rollback();
-//			throw e;
-//		} finally {
-//			entityManager.close();	
-//		}
-		
-		this.plantillaJPA.remove(this.plantillaJPA.merge(objeto));
+	public void borrar(T objeto) {		
+		getJpaTemplate().remove(getJpaTemplate().merge(objeto));
+		System.out.println("BORRANDO OBJETO");
 	}
 	
 	/**
@@ -102,43 +59,21 @@ public class GenericDAOJPAImpl<T, Id> implements GenericDAO <T, Id> {
 	 * @param objeto Entidad a modificar
 	 */
 	public void salvar(T objeto) {
-//		EntityManager entityManager = entityManagerFactory.createEntityManager();
-//		EntityTransaction transaccion = null;
-//		try {
-//			transaccion = entityManager.getTransaction();
-//			transaccion.begin();
-//			entityManager.merge(objeto);
-//			transaccion.commit();
-//		} catch(PersistenceException e) {
-//			entityManager.getTransaction().rollback();
-//			throw e;
-//		} finally {
-//			entityManager.close();
-//		}
+		getJpaTemplate().merge(objeto);
 		
-		this.plantillaJPA.merge(objeto);
+		System.out.println("GUARDANDO OBJETO");
 	}
 	
 	// Finders
+	// ------------------------------------------------------------------
 	
 	/**
 	 * Realiza un join fetch sobre una tabla de la BB.DD
 	 * @return Lista con todos los elementos de la tabla
 	 */
 	@SuppressWarnings("unchecked")
-	public List<T> buscarTodos() {
-//		EntityManager entityManager = entityManagerFactory.createEntityManager();
-//		List<T> listaDeObjetos = null;
-//		String q = "select o from " + claseDePersistencia.getSimpleName() + " o";
-//		TypedQuery<T> consulta = entityManager.createQuery(q, this.claseDePersistencia);
-//		try {
-//			listaDeObjetos = consulta.getResultList();
-//		} finally {
-//			entityManager.close();
-//		}
-//		return listaDeObjetos;
-		
-		return this.plantillaJPA.find("select o from " + claseDePersistencia.getSimpleName() + " o");
+	public List<T> buscarTodos() {		
+		return getJpaTemplate().find("select o from " + claseDePersistencia.getSimpleName() + " o");
 	}
 	
 	/**
@@ -147,18 +82,7 @@ public class GenericDAOJPAImpl<T, Id> implements GenericDAO <T, Id> {
 	 * @param id Clave primaria del libro a buscar
 	 * @return T Objeto cuya clave coincida con la que se le pasa como parámetro
 	 */
-	public T buscarPorClave(Id id) {
-//		EntityManager entityManager = entityManagerFactory.createEntityManager();
-//		T objeto = null;
-//		TypedQuery<T> consulta = entityManager.createNamedQuery("buscarPorClave", claseDePersistencia);
-//		consulta.setParameter(1, id);
-//		try {
-//			objeto = consulta.getSingleResult();
-//		} finally {
-//			entityManager.close();
-//		}
-//		return objeto;
-		
-		return this.plantillaJPA.find(claseDePersistencia, id);
+	public T buscarPorClave(Id id) {		
+		return getJpaTemplate().find(claseDePersistencia, id);
 	}
 }

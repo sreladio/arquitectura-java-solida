@@ -24,17 +24,21 @@
 			</bean>
 		</property>
 	</bean>
-    
+   
+   <!-- Ya no se utiliza directamente, si no que usamos la clase 'JpaDaoSupport' 
+   
     <bean id="plantillaJPA" class="org.springframework.orm.jpa.JpaTemplate">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
     
+   -->
+    
 	<bean id="libroDAO"	class="com.arquitecturajava.aplicacion.dao.jpa.LibroDAOJPAImpl">
-		<property name="plantillaJPA" ref="plantillaJPA"></property>
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
 	</bean>
 	
 	<bean id="categoriaDAO"	class="com.arquitecturajava.aplicacion.dao.jpa.CategoriaDAOJPAImpl">
-		<property name="plantillaJPA" ref="plantillaJPA"></property>
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
 	</bean>
 	
 	<bean id="servicioLibros" class="com.arquitecturajava.aplicacion.servicios.impl.ServicioLibrosImpl">
