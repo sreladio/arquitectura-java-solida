@@ -8,6 +8,7 @@ import java.util.List;
 import com.arquitecturajava.aplicacion.dao.GenericDAO;
 
 import org.springframework.orm.jpa.support.JpaDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementación genérica del DAO genérico siguiendo el estandard JPA.
@@ -40,6 +41,7 @@ public class GenericDAOJPAImpl<T, Id> extends JpaDaoSupport implements GenericDA
 	 * Guarda una entidad en la BB.DD utilizando el standard JPA
 	 * @param objeto Entidad a persistir
 	 */
+	@Transactional
 	public void insertar(T objeto) {		
 		getJpaTemplate().persist(objeto);
 		System.out.println("INSERTANDO OBJETO");
@@ -49,6 +51,7 @@ public class GenericDAOJPAImpl<T, Id> extends JpaDaoSupport implements GenericDA
 	 * Elimina una entidad de la BB.DD utilizando el standard JPA
 	 * @param objeto Entidad a eliminar
 	 */
+	@Transactional
 	public void borrar(T objeto) {		
 		getJpaTemplate().remove(getJpaTemplate().merge(objeto));
 		System.out.println("BORRANDO OBJETO");
@@ -58,6 +61,7 @@ public class GenericDAOJPAImpl<T, Id> extends JpaDaoSupport implements GenericDA
 	 * Modifica una entidad de la BB.DD utilizando el standard JPA
 	 * @param objeto Entidad a modificar
 	 */
+	@Transactional
 	public void salvar(T objeto) {
 		getJpaTemplate().merge(objeto);
 		
@@ -72,6 +76,7 @@ public class GenericDAOJPAImpl<T, Id> extends JpaDaoSupport implements GenericDA
 	 * @return Lista con todos los elementos de la tabla
 	 */
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
 	public List<T> buscarTodos() {		
 		return getJpaTemplate().find("select o from " + claseDePersistencia.getSimpleName() + " o");
 	}
