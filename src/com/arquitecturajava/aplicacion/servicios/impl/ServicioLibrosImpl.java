@@ -2,12 +2,16 @@ package com.arquitecturajava.aplicacion.servicios.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.arquitecturajava.aplicacion.beans.Categoria;
 import com.arquitecturajava.aplicacion.beans.Libro;
 import com.arquitecturajava.aplicacion.dao.CategoriaDAO;
 import com.arquitecturajava.aplicacion.dao.LibroDAO;
 import com.arquitecturajava.aplicacion.servicios.ServicioLibros;
 
+@Service(value="servicioLibros")
 public class ServicioLibrosImpl implements ServicioLibros {
 
 	private LibroDAO libroDAO = null;
@@ -86,11 +90,13 @@ public class ServicioLibrosImpl implements ServicioLibros {
 	}
 
 	@Override
+	@Autowired
 	public void setLibroDAO(LibroDAO libroDAO) {
 		this.libroDAO = libroDAO;
 	}
 
 	@Override
+	@Autowired
 	public void setCategoriaDAO(CategoriaDAO categoriaDAO) {
 		this.categoriaDAO = categoriaDAO;
 	}
