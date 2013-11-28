@@ -2,6 +2,11 @@ package com.arquitecturajava.aplicacion.dao.jpa;
 
 import java.util.List;
 
+import javax.persistence.TypedQuery;
+
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.arquitecturajava.aplicacion.beans.Categoria;
 import com.arquitecturajava.aplicacion.beans.Libro;
 import com.arquitecturajava.aplicacion.dao.LibroDAO;
@@ -12,6 +17,7 @@ import com.arquitecturajava.aplicacion.dao.LibroDAO;
  * 
  * @author eladio
  */
+@Repository
 public class LibroDAOJPAImpl extends GenericDAOJPAImpl <Libro, String> implements LibroDAO {
 	
 	/**
@@ -20,19 +26,22 @@ public class LibroDAOJPAImpl extends GenericDAOJPAImpl <Libro, String> implement
 	 * @param categoria Clave foránea de la entidad Libro
 	 * @return Lista de libros
 	 */
-	@SuppressWarnings("unchecked")
-	public List<Libro> buscarPorCategoria(Categoria categoria) {		
-		return getJpaTemplate().findByNamedQuery("buscarPorCategoria", categoria);
+	@Transactional
+	public List<Libro> buscarPorCategoria(Categoria categoria) {	
+		TypedQuery <Libro> consulta = getEntityManager().createNamedQuery("buscarPorCategoria", claseDePersistencia);
+		consulta.setParameter(1,categoria);
+		return consulta.getResultList();
 	}
 	
 	/**
 	 * Para evitar el LAZY LOADING realizamos un JOIN FETCH en la consulta
 	 * cargando todos los elementos de la relacción en una sola tabla
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional
 	public List<Libro> buscarTodos() {
-		String q = "select l from Libro l JOIN FETCH l.categoria";		
-		return getJpaTemplate().find(q);
+		String q = "select l from Libro l JOIN FETCH l.categoria";
+		TypedQuery <Libro> consulta = getEntityManager().createQuery(q, claseDePersistencia);
+		return consulta.getResultList();
 	}
 }
