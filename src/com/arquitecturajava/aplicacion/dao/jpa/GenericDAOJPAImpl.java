@@ -5,9 +5,12 @@ import java.lang.reflect.Type;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
 import com.arquitecturajava.aplicacion.dao.GenericDAO;
 
-import org.springframework.orm.jpa.support.JpaDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -20,9 +23,12 @@ import org.springframework.transaction.annotation.Transactional;
  * @param <T> Tipo de clase de persistencia
  * @param <Id> Tipo del campo de la clave principal de la tabla
  */
-public class GenericDAOJPAImpl<T, Id> extends JpaDaoSupport implements GenericDAO <T, Id> {
+public class GenericDAOJPAImpl<T, Id> implements GenericDAO <T, Id> {
 
-	private Class<T> claseDePersistencia;
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	protected Class<T> claseDePersistencia;
 	
 	/**
 	 * Obtiene el tipo de la clase de persistencia 
@@ -32,7 +38,22 @@ public class GenericDAOJPAImpl<T, Id> extends JpaDaoSupport implements GenericDA
 		Type clasePadre = getClass().getGenericSuperclass();
         ParameterizedType parametrosClasePadre = (ParameterizedType) clasePadre;
         this.claseDePersistencia = (Class<T>) parametrosClasePadre.getActualTypeArguments()[0];
+		
+//		this.claseDePersistencia = (Class<T>) ((ParameterizedType) getClass()
+//				.getGenericSuperclass()).getActualTypeArguments()[0];
+
 	}
+	
+	// Inyección de dependencias
+	// ------------------------------------------------------------------
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+	
+	public EntityManager getEntityManager() {
+		return this.entityManager;
+	}
+	
 	
 	// CRUD
 	// ------------------------------------------------------------------
@@ -43,7 +64,7 @@ public class GenericDAOJPAImpl<T, Id> extends JpaDaoSupport implements GenericDA
 	 */
 	@Transactional
 	public void insertar(T objeto) {		
-		getJpaTemplate().persist(objeto);
+		getEntityManager().persist(objeto);
 		System.out.println("INSERTANDO OBJETO");
 	}
 	
@@ -53,7 +74,7 @@ public class GenericDAOJPAImpl<T, Id> extends JpaDaoSupport implements GenericDA
 	 */
 	@Transactional
 	public void borrar(T objeto) {		
-		getJpaTemplate().remove(getJpaTemplate().merge(objeto));
+		getEntityManager().remove(getEntityManager().merge(objeto));
 		System.out.println("BORRANDO OBJETO");
 	}
 	
@@ -63,7 +84,7 @@ public class GenericDAOJPAImpl<T, Id> extends JpaDaoSupport implements GenericDA
 	 */
 	@Transactional
 	public void salvar(T objeto) {
-		getJpaTemplate().merge(objeto);
+		getEntityManager().merge(objeto);
 		
 		System.out.println("GUARDANDO OBJETO");
 	}
@@ -75,10 +96,13 @@ public class GenericDAOJPAImpl<T, Id> extends JpaDaoSupport implements GenericDA
 	 * Realiza un join fetch sobre una tabla de la BB.DD
 	 * @return Lista con todos los elementos de la tabla
 	 */
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	public List<T> buscarTodos() {		
-		return getJpaTemplate().find("select o from " + claseDePersistencia.getSimpleName() + " o");
+		List<T> listaDeObjetos = null;
+		String q = "select o from " + claseDePersistencia.getSimpleName() + " o";
+		TypedQuery<T> consulta = getEntityManager().createQuery(q, claseDePersistencia); 
+		listaDeObjetos = consulta.getResultList();				
+		return listaDeObjetos;
 	}
 	
 	/**
@@ -88,6 +112,6 @@ public class GenericDAOJPAImpl<T, Id> extends JpaDaoSupport implements GenericDA
 	 * @return T Objeto cuya clave coincida con la que se le pasa como parámetro
 	 */
 	public T buscarPorClave(Id id) {		
-		return getJpaTemplate().find(claseDePersistencia, id);
+		return getEntityManager().find(claseDePersistencia, id);
 	}
 }
