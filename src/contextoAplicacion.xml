@@ -3,14 +3,19 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:context="http://www.springframework.org/schema/context"
 	   xsi:schemaLocation=
 	   "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-	   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
-        
-    <!-- clases que queremos que sean instanciadas por la factoría de String -->
-    
+	   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+           
     <tx:annotation-driven />
-		<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+    <context:annotation-config />
+	<context:component-scan base-package="com.arquitecturajava.aplicacion.*" />
+	        
+    <!-- clases instanciadas por la factoría de String -->
+    
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 			<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
     
@@ -32,26 +37,5 @@
 		</property>
 	</bean>
    
-   <!-- Ya no se utiliza directamente, si no que usamos la clase 'JpaDaoSupport' 
-   
-    <bean id="plantillaJPA" class="org.springframework.orm.jpa.JpaTemplate">
-		<property name="entityManagerFactory" ref="entityManagerFactory" />
-	</bean>
-    
-   -->
-	
-	<bean id="servicioLibros" class="com.arquitecturajava.aplicacion.servicios.impl.ServicioLibrosImpl">
-		<property name="libroDAO" ref="libroDAO"></property>
-		<property name="categoriaDAO" ref="categoriaDAO"></property>
-	</bean>
-	    
-	<bean id="libroDAO"	class="com.arquitecturajava.aplicacion.dao.jpa.LibroDAOJPAImpl">
-		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
-	</bean>
-	
-	<bean id="categoriaDAO"	class="com.arquitecturajava.aplicacion.dao.jpa.CategoriaDAOJPAImpl">
-		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
-	</bean>
-
 </beans>
         
