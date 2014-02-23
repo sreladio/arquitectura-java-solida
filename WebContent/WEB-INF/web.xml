@@ -17,13 +17,32 @@
   </listener>
   
   <welcome-file-list>
-    <welcome-file>MostrarLibros</welcome-file>
+    <!-- <welcome-file>MostrarLibros</welcome-file>  -->
+    <welcome-file>/faces/MostrarLibros.xhtml</welcome-file>
   </welcome-file-list>
-  
+ 
+<!--  
   <error-page>
     <exception-type>java.lang.RuntimeException</exception-type>
     <location>/Error.jsp</location>
   </error-page>
+  
+ -->
+ 
+  <!-- Controlador de JSF Faces Servlet -->
+   
+  <servlet>
+  	<servlet-name>Faces Servlet</servlet-name>
+  	<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+  	<load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>Faces Servlet</servlet-name>
+  	<url-pattern>/faces/*</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Controlador frontal MVC2 para usar con las acciones
   
   <servlet>
     <description></description>
@@ -43,4 +62,7 @@
     <url-pattern>/SalvarLibro</url-pattern>
     <url-pattern>/FiltrarCategoria</url-pattern>
   </servlet-mapping>
+  
+   -->
+   
 </web-app>

@@ -4,7 +4,7 @@
 
 <%@ page import = "java.util.List" %>    	 
 <%@ page import = "java.util.ArrayList" %>
-<%@ page import = "com.arquitecturajava.aplicacion.beans.Libro" %> 
+<%@ page import = "com.arquitecturajava.aplicacion.bo.Libro" %> 
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
