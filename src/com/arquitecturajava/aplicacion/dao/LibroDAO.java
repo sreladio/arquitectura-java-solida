@@ -2,8 +2,8 @@ package com.arquitecturajava.aplicacion.dao;
 
 import java.util.List;
 
-import com.arquitecturajava.aplicacion.beans.Categoria;
-import com.arquitecturajava.aplicacion.beans.Libro;
+import com.arquitecturajava.aplicacion.bo.Categoria;
+import com.arquitecturajava.aplicacion.bo.Libro;
 
 /**
  * FACADE que se le proporciona a los Actions del MVC con todas las operaciones

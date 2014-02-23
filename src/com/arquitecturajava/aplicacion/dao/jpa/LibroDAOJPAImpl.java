@@ -7,8 +7,8 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.arquitecturajava.aplicacion.beans.Categoria;
-import com.arquitecturajava.aplicacion.beans.Libro;
+import com.arquitecturajava.aplicacion.bo.Categoria;
+import com.arquitecturajava.aplicacion.bo.Libro;
 import com.arquitecturajava.aplicacion.dao.LibroDAO;
 
 /**

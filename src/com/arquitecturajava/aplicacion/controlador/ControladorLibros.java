@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.arquitecturajava.aplicacion.controlador.acciones.Accion;
 
 /**
- * Controlador del MVC que implementa al INVOKER del patrón Command.
+ * Controlador del MVC2 que implementa al INVOKER del patrón Command.
  * 
  * Recive todas las peticiones de las JSP's (CLIENTES) y delegará en
  * las aciones (COMMANDS) que serán las que realicen las operaciones

@@ -2,7 +2,7 @@ package com.arquitecturajava.aplicacion.dao.jpa;
 
 import org.springframework.stereotype.Repository;
 
-import com.arquitecturajava.aplicacion.beans.Categoria;
+import com.arquitecturajava.aplicacion.bo.Categoria;
 import com.arquitecturajava.aplicacion.dao.CategoriaDAO;
 
 /**

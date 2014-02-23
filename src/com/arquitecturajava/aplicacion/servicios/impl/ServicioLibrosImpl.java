@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.arquitecturajava.aplicacion.beans.Categoria;
-import com.arquitecturajava.aplicacion.beans.Libro;
+import com.arquitecturajava.aplicacion.bo.Categoria;
+import com.arquitecturajava.aplicacion.bo.Libro;
 import com.arquitecturajava.aplicacion.dao.CategoriaDAO;
 import com.arquitecturajava.aplicacion.dao.LibroDAO;
 import com.arquitecturajava.aplicacion.servicios.ServicioLibros;

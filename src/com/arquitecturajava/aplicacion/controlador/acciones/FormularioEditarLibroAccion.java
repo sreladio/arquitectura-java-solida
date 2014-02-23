@@ -5,8 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.arquitecturajava.aplicacion.beans.Libro;
-import com.arquitecturajava.aplicacion.beans.Categoria;
+import com.arquitecturajava.aplicacion.bo.Categoria;
+import com.arquitecturajava.aplicacion.bo.Libro;
 import com.arquitecturajava.aplicacion.servicios.ServicioLibros;
 import com.arquitecturajava.aplicacion.servicios.impl.ServicioLibrosImpl;
 

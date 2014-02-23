@@ -2,8 +2,8 @@ package com.arquitecturajava.aplicacion.servicios;
 
 import java.util.List;
 
-import com.arquitecturajava.aplicacion.beans.Libro;
-import com.arquitecturajava.aplicacion.beans.Categoria;
+import com.arquitecturajava.aplicacion.bo.Categoria;
+import com.arquitecturajava.aplicacion.bo.Libro;
 import com.arquitecturajava.aplicacion.dao.CategoriaDAO;
 import com.arquitecturajava.aplicacion.dao.LibroDAO;
 
