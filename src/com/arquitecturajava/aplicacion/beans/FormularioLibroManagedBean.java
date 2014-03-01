@@ -119,6 +119,15 @@ public class FormularioLibroManagedBean {
 		}
 	}
 	
+	/**
+	 * Se encarga de vaciar las variables isbn y titulo
+	 * @param e
+	 */
+	public void formularioInsertar(ActionEvent e) {
+		this.isbn = "";
+		this.titulo = "";
+	}
+	
 	// Getters y Setters
 	// -----------------
 	
