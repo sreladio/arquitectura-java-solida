@@ -21,7 +21,7 @@ import com.arquitecturajava.aplicacion.servicios.ServicioLibros;
 
 /**
  * Contiene toda la funcionalidad que antes estaba dispersa en las
- * distintas acciones
+ * distintas acciones del modelo MVC2
  * 
  * @author eladio
  */
@@ -69,44 +69,81 @@ public class FormularioLibroManagedBean {
 	// Acciones y eventos
 	// ------------------
 	
+	/**
+	 * Utiliza el servício para insertar un nuevo libro
+	 * @param evento
+	 */
 	public void insertar(ActionEvent evento) {
 		Categoria categoria = new Categoria(this.categoria);
 		Libro libro = new Libro(isbn, titulo, categoria);
 		
 		// Realizamos la propia acción
-		getServicioLibros().insertarLibro(libro);
+		this.getServicioLibros().insertarLibro(libro);
 		
 		// Actualizamos la lista del managed bean
 		List<Libro> listaDeLibros = getServicioLibros().buscarTodosLosLibros();
 		this.setListaDeLibros(listaDeLibros);
+		
+		// Reseteamos categoria para que nos muestre todos los libros
+		this.setCategoria("0");
 	}
 	
+	/**
+	 * Utiliza el servicio para eliminar un libro
+	 * @param evento
+	 */
 	public void borrar(ActionEvent evento) {
 		// Obtenemos el parámetro de la request
 		UIComponent componente = (UIComponent) evento.getComponent();
 		String isbn = componente.getAttributes().get("isbn").toString();
 		
 		// Realizamos la propia acción
-		getServicioLibros().borrarLibro(new Libro(isbn));
+		this.getServicioLibros().borrarLibro(new Libro(isbn));
 		
 		// Actualizamos la lista del managed bean
-		setListaDeLibros(getServicioLibros().buscarTodosLosLibros());
+		this.setListaDeLibros(getServicioLibros().buscarTodosLosLibros());
 	}
 	
+	/**
+	 * Carga en el ManagedBean los datos relativos al libro que se va a editar
+	 * @param evento
+	 */
 	public void editar(ActionEvent evento) {
+		// Obtenemos el parámetro de la request
 		UIComponent componente = (UIComponent) evento.getComponent();
-		Libro libro = getServicioLibros().buscarLibroPorClave(
-		componente.getAttributes().get("isbn").toString());
-		isbn = libro.getIsbn();
-		titulo = libro.getTitulo();
+		String isbn = componente.getAttributes().get("isbn").toString();
+		
+		// Buscamos el libro que se va a editar
+		Libro libro = getServicioLibros().buscarLibroPorClave(isbn);
+		
+		// Obtenemos los datos del libro
+		this.isbn = libro.getIsbn();
+		this.titulo = libro.getTitulo();
 	}
 	
+	/**
+	 * Llama al servício para actualizar un libro
+	 * @param evento
+	 */
 	public void salvar(ActionEvent evento) {
-		getServicioLibros().salvarLibro(
-				new Libro(isbn, titulo, new Categoria(categoria)));
-				setListaDeLibros(getServicioLibros().buscarTodosLosLibros());
+		Categoria categoria = new Categoria(this.categoria);
+		Libro libro = new Libro(this.isbn, this.titulo, categoria);
+		
+		// Llamamos al método update del servicio
+		this.getServicioLibros().salvarLibro(libro);
+		
+		// Actualizamos la lista de Libros en el ManagedBean
+		List<Libro> libros = this.getServicioLibros().buscarTodosLosLibros();
+		this.setListaDeLibros(libros);
+		
+		// Reseteamos categoria para que nos muestre todos los libros
+		this.setCategoria("0");
 	}
 	
+	/**
+	 * 
+	 * @param evento
+	 */
 	public void filtrar(ValueChangeEvent evento) {
 		UIComponent componente = (UIComponent) evento.getComponent();
 		String idCategoria = componente.getAttributes().get("value").toString();
