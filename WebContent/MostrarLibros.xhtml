@@ -4,7 +4,10 @@
 	  xmlns:f="http://java.sun.com/jsf/core" 
 	  xmlns:h="http://java.sun.com/jsf/html">
 
-<f:viewcontent type="text/html" />
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+	<title>FormularioInsertarLibro</title>
+</h:head>
 
 <f:view>
 <body>
@@ -14,7 +17,7 @@
 			valueChangeListener="#{formularioLibroManagedBean.filtrar}"
 			value="#{formularioLibroManagedBean.categoria}" onchange="submit()">
 
-			<f:selectItemitem value="0" itemLabel="seleccionar" />
+			<f:selectItem itemValue="0" itemLabel="seleccionar" />
 			<f:selectItems value="#{formularioLibroManagedBean.listaDeCategorias}" />
 		</h:selectOneMenu>
 		
@@ -31,7 +34,7 @@
 		</h:column>
 		
 		<h:column>
-			#{libro.categoria.descripcion}
+			#{libro.categoria.nombre}
 		</h:column>
 		
 		<h:column>
