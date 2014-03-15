@@ -48,6 +48,20 @@ id="WebApp_ID" version="3.0">
   	<url-pattern>/faces/*</url-pattern>
   </servlet-mapping>
   
+  <!-- Servlet de Apache CXF -->
+  <servlet>
+  	  <servlet-name>CXFServlet</servlet-name>
+	  <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+	  <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+	  <servlet-name>CXFServlet</servlet-name>
+	  <url-pattern>/servicios/*</url-pattern>
+  </servlet-mapping>
+	  
+  
+  
   <!-- Controlador frontal MVC2 para usar con las acciones
   
   <servlet>
